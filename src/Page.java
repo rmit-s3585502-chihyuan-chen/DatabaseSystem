@@ -1,31 +1,22 @@
 import java.util.ArrayList;
-
-
-
-
-
 public class Page {
 	private int Length;
     private String Content;
     private ArrayList<Record> recordList;
  
     public Page(){
-    		Length=2;
+    		Length=4;
 		this.recordList = new ArrayList<>();
     }
-    
     public ArrayList<Record> getRecord(){
     	return recordList;
     }
     
     public void add(Record record){
     		this.recordList.add(record);
-    		Length+=record.getLength();
+    		Length+=record.getLength()+4;
     }
-    public Page(int Length, String Content) {
-        this.Length = Length;
-        this.Content = Content;
-    }
+
 
     public int getLength() {
         return Length;

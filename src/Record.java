@@ -20,7 +20,7 @@ public class Record {
     	return fieldList;
     }
     private void calLength(){
-	Length=18;
+	Length=36;
     	for(int i=0;i<fieldList.size();i++){
 		Length+= fieldList.get(i).getLength();
 	}
