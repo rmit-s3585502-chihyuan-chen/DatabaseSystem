@@ -123,9 +123,8 @@ public class dbload {
 				}
 			}
 		}
-	calculator.printRecordNumbers();
-    calculator.printPageNumbers();
     calculator.CalculateTime();
+    calculator.outputStdout();
 	}
 
 }
