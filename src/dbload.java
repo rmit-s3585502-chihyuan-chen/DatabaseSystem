@@ -7,12 +7,15 @@ import java.util.ArrayList;
 public class dbload {
 
 	public static void main(String[] args) throws IOException {
+		int pageNumber=0;
+		int recordNumber=0;
 		int pagesize = 4096;
 		String csvFile = "BUSINESS_NAMES_201803.csv";
 		String cvsSplitBy = "\t";
 		ArrayList<Field> fieldList = new ArrayList<>();
 		ArrayList<Record> recordList = new ArrayList<>();
 		ArrayList<Page> pagelist = new ArrayList<>();
+		Calculate calculator= new Calculate(pageNumber,recordNumber);
 		int filedNumber = 0;
 		int length;
 		int index;
@@ -49,14 +52,16 @@ public class dbload {
 				fieldList.add(new Field("String", elements[7]));
 				fieldList.add(new Field("long", elements[8]));
 				Record record = new Record(fieldList);
+				calculator.CalculateRecord();
 				if (pagesize - page.getLength() -4> record.getLength()) {
 					page.add(record);
 				} else {
-					//if (pagelist.size() == 10000)
-					//	break;
+					if (pagelist.size() == 10)
+						break;
                 
 					pagelist.add(page);
 					page = new Page();
+					calculator.CalculatePage();
 					page.add(record);
 				}
 
@@ -114,7 +119,8 @@ public class dbload {
 				}
 			}
 		}
-
+	System.out.println("The number of recordsloaded: " + calculator.getRecordNumber());
+	System.out.println("The number of pages: " + calculator.getPageNumber());
 	}
 
 }
