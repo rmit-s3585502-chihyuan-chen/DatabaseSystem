@@ -7,6 +7,8 @@ import java.util.ArrayList;
 public class dbload {
 
 	public static void main(String[] args) throws IOException {
+		long startTime = 0;
+		long endTime=0;
 		int pageNumber=0;
 		int recordNumber=0;
 		int pagesize = 4096;
@@ -15,7 +17,7 @@ public class dbload {
 		ArrayList<Field> fieldList = new ArrayList<>();
 		ArrayList<Record> recordList = new ArrayList<>();
 		ArrayList<Page> pagelist = new ArrayList<>();
-		Calculate calculator= new Calculate(pageNumber,recordNumber);
+		Calculate calculator= new Calculate(pageNumber,recordNumber,startTime,endTime);
 		int filedNumber = 0;
 		int length;
 		int index;
@@ -56,7 +58,7 @@ public class dbload {
 				if (pagesize - page.getLength() -4> record.getLength()) {
 					page.add(record);
 				} else {
-					if (pagelist.size() == 10)
+					if (pagelist.size() == 100)
 						break;
                 
 					pagelist.add(page);
@@ -74,6 +76,7 @@ public class dbload {
 				// }
 				// } testing to printout data
 			}
+			calculator.setStatrTime();
 			OutputHeap out = new OutputHeap("heap." + pagesize);
 			for (int i = 0; i < pagelist.size(); i++) {
 				page=pagelist.get(i);
@@ -106,6 +109,7 @@ public class dbload {
 				byte availableSpace[] = new byte[disk];
 				out.writeBinary(availableSpace);
 			}
+			calculator.SetEndTime();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -119,8 +123,9 @@ public class dbload {
 				}
 			}
 		}
-	System.out.println("The number of recordsloaded: " + calculator.getRecordNumber());
-	System.out.println("The number of pages: " + calculator.getPageNumber());
+	calculator.printRecordNumbers();
+    calculator.printPageNumbers();
+    calculator.CalculateTime();
 	}
 
 }
