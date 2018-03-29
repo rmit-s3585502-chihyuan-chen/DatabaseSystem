@@ -11,8 +11,8 @@ public class dbload {
 		long endTime=0;
 		int pageNumber=0;
 		int recordNumber=0;
-		int pagesize = 4096;
-		String csvFile = "BUSINESS_NAMES_201803.csv";
+		int pagesize;
+		String fileName;
 		String cvsSplitBy = "\t";
 		ArrayList<Field> fieldList = new ArrayList<>();
 		ArrayList<Record> recordList = new ArrayList<>();
@@ -27,8 +27,15 @@ public class dbload {
 		BufferedReader br = null;
 		String line = "";
 		try {
+		    if(args[0].equals("-p")){
+		    	pagesize=Integer.parseInt(args[1]);
+		    	fileName=args[2];
+		    }else{
+		    	pagesize=Integer.parseInt(args[1]);
+		    	fileName=args[0];
+		    }
 			Page page = new Page();
-			br = new BufferedReader(new FileReader(csvFile));
+			br = new BufferedReader(new FileReader(fileName));
 			br.readLine();
 			while ((line = br.readLine()) != null) {
 				fieldList = new ArrayList<>();
