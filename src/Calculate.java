@@ -43,15 +43,13 @@ public class Calculate {
 		
 	}
 	public void CalculateTime(){ //calculate the time and output the page number ,record number and time 
-		long finishedTime=(endTime-startTime);
-		data[0]="The number of records loaded:"+Integer.toString(recordNumber);
-		data[1]="The number of pages used:"+Integer.toString(pageNumber);
-		data[2]="The number of milliseconds to create the heap file:"+Long.toString(finishedTime);
-		for(int i=0;i<data.length;i++){
-			System.out.println(data[i]);
+		System.out.println("The number of milliseconds to create the heap file:"+Long.toString(endTime-startTime));
+		
 		}
+	public void CalculateTime2(){ //calculate the total time taken to do all the search opera-tions in milliseconds 
+		System.out.println("The total time taken to do all the search opera-tions in milliseconds:"+(Long.toString(endTime-startTime)));
+		
 		}
-	
 	public void printPageNumbers(){ //printout the number of pages
 		System.out.println("The number of pages used:"+pageNumber);
 	}
