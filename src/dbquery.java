@@ -37,13 +37,17 @@ public class dbquery {
 					System.out.println("");
 				ArrayList<Integer> recordIndex = dbquery.getIndex(readFile, recoreNumber);//set the recordIndex
 				ArrayList<Record> records = dbquery.getRecord(readFile, recordIndex);//set the record
+				String[]target;
 				for (int i = 0; i < records.size(); i++) {//search and retrieve data
+					
 					if (records.get(i).getField().get(1).getContent().contains(text)) {
 						for (int n = 1; n < 9; n++) {
+				
 							System.out.print(records.get(i).getField().get(n).getContent()+" ");
 						}
 						System.out.println("");
-					}
+						
+					}					
 					
 				}
              

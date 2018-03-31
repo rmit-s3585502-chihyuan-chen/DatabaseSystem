@@ -81,10 +81,11 @@ public class dbload {
 				fieldList.add(new Field("long", elements[8]));
 				// add each elements which contains different types of fields into fieldList
 				Record record = new Record(fieldList);// create the new record to store field
-				calculator.CalculateRecord();// calculate record number
+				
 				if (pagesize - page.getLength() -4 > record.getLength()) { // if the page has the space, the page will
-																			// store this record
-					page.add(record);
+					page.add(record);														// store this record
+					calculator.CalculateRecord();// calculate record number
+					
 				} else { // if the page does not have the space to add new record, it will create new
 							// page to store record
 					//if(calculator.getPageNumber() == 100) // use the small page to test
@@ -93,6 +94,7 @@ public class dbload {
 					page = new Page();
 					calculator.CalculatePage();
 					page.add(record);
+					calculator.CalculateRecord();// calculate record number
 				}
 
 			}
