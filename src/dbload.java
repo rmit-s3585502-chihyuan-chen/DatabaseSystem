@@ -87,8 +87,8 @@ public class dbload {
 					page.add(record);
 				} else { // if the page does not have the space to add new record, it will create new
 							// page to store record
-					if (calculator.getPageNumber() == 100) // use the small page to test
-						break; // use the small page to test
+					//if(calculator.getPageNumber() == 100) // use the small page to test
+					//	break; // use the small page to test
 					output(page);
 					page = new Page();
 					calculator.CalculatePage();

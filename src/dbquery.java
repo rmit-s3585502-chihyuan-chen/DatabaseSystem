@@ -13,9 +13,53 @@ import java.util.ArrayList;
 public class dbquery {
 
 	public static void main(String[] args) {
+		dbquery dbquery = new dbquery();//initialize the dbquery
+		FileInputStream input;//set the file input stream
+		File file; //set file varable
+		int pageIndex = 0;//set the default pageIndex
+		int pageSize;// set the default pageSize
+		long startTime = 0;
+		long endTime=0;
+		try {
+            Calculate calculator=new Calculate(0,0,startTime,endTime);
+			String text = args[0]; // Get the text query
+			pageSize = Integer.parseInt(args[1]); // Get the pagesize
+			String filePath = ("heap." + args[1]); // Get the file name
+			file = new File(filePath); //set the file to load file from the path
+			input = new FileInputStream(file);//input the file
+			byte[] readFile = new byte[pageSize];//set the array to store heap file's data
+			int count = 0;
+			calculator.setStatrTime();//start timing
+			while (input.read(readFile, 0, pageSize) != -1) {
+				count++;
+				int recoreNumber = dbquery.getRecordNumber(readFile);//set the recoreNumber
+				if (recoreNumber <= 0)//fill the empty value
+					System.out.println("");
+				ArrayList<Integer> recordIndex = dbquery.getIndex(readFile, recoreNumber);//set the recordIndex
+				ArrayList<Record> records = dbquery.getRecord(readFile, recordIndex);//set the record
+				for (int i = 0; i < records.size(); i++) {//search and retrieve data
+					if (records.get(i).getField().get(1).getContent().contains(text)) {
+						for (int n = 1; n < 9; n++) {
+							System.out.print(records.get(i).getField().get(n).getContent()+" ");
+						}
+						System.out.println("");
+					}
+					
+				}
+             
+			}
+			calculator.SetEndTime();
+            calculator.CalculateTime2();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Cannot read the Heap File");
+		}
 		
 	}
 
+	public void search() {
+
+	}
 
 	public int getRecordNumber(byte[] readFile) {//get the record number 
 		byte[] temp = new byte[4];
