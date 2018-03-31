@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.util.ArrayList;
 
 /**
  * @Author: Chih-Yuan Chen s3585502
@@ -7,4 +12,90 @@
  */
 public class dbquery {
 
+	public static void main(String[] args) {
+		
+	}
+
+
+	public int getRecordNumber(byte[] readFile) {//get the record number 
+		byte[] temp = new byte[4];
+		System.arraycopy(readFile, 0, temp, 0, 4);
+
+		return changeToInt(temp);
+
+	}
+
+	public ArrayList<Integer> getIndex(byte[] readFile, int recordNumber) { //get the record index
+		ArrayList<Integer> getTheRecordIndex = new ArrayList();
+		byte[] temp = new byte[4];
+		for (int i = 0; i < recordNumber+1; i++) {
+			System.arraycopy(readFile, 4 + 4 * i, temp, 0, 4);
+			getTheRecordIndex.add(changeToInt(temp));
+		}
+		return getTheRecordIndex;
+
+	}
+
+	public ArrayList<Record> getRecord(byte[] readFile, ArrayList<Integer> getIndex) {//get the record
+		ArrayList<Record> showRecord = new ArrayList();
+
+		for (int i = 0; i < getIndex.size() - 1; i++) {
+			int indexLength = ((getIndex.get(i + 1)) - getIndex.get(i));
+			byte[] temp = new byte[indexLength];
+			System.arraycopy(readFile, getIndex.get(i), temp, 0, indexLength);
+
+			ArrayList<Integer> fieldIndex = getFieldIndex(temp);
+			Record record = new Record(getField(temp, fieldIndex));
+			showRecord.add(record);
+
+		}
+		return showRecord;
+	}
+
+	public ArrayList<Field> getField(byte[] readFile, ArrayList<Integer> getFieldIndex) {//get the field
+		ArrayList<Field> getField = new ArrayList<>();
+		for (int i = 0; i < getFieldIndex.size() - 1; i++) {
+			int FieldIndexLength = ((getFieldIndex.get(i + 1)) - getFieldIndex.get(i));
+			if(FieldIndexLength<0)
+				System.out.println("");
+			byte[] temp = new byte[FieldIndexLength];
+			System.arraycopy(readFile, getFieldIndex.get(i), temp, 0, FieldIndexLength);
+			String field = new String(temp);
+			getField.add(new Field("String", field));
+		}
+		byte[] temp = new byte[8];
+		System.arraycopy(readFile, getFieldIndex.get(8), temp, 0, 8);
+		getField.add(new Field("String", Long.toString(changeToLong(temp))));
+
+		return getField;
+	}
+
+	public ArrayList<Integer> getFieldIndex(byte[] readFile) { //get the field index
+		ArrayList<Integer> getFieldIndex = new ArrayList();
+		byte[] temp = new byte[4];
+		for (int i = 0; i < 9; i++) {
+			System.arraycopy(readFile, 4 * i, temp, 0, 4);
+			getFieldIndex.add(changeToInt(temp));
+		}
+		return getFieldIndex;
+
+	}
+
+	public int changeToInt(byte[] binaryFile) {//transfer the data type
+		int result = 0;
+		for (int i = 0; i < 4; i++) {
+			result <<= 8;
+			result |= (binaryFile[i] & 0xff);
+		}
+		return result;
+	}
+
+	public long changeToLong(byte[] binaryFile) {//transfer the data type
+		long result = 0;
+		for (int i = 0; i < 8; i++) {
+			result <<= 8;
+			result |= (binaryFile[i] & 0xff);
+		}
+		return result;
+	}
 }
